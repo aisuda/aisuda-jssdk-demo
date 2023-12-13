@@ -1,0 +1,35 @@
+.App {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.App-nav ul {
+  margin: 0;
+  padding: 0 10px;
+  height: 50px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 4px 6px 0 #eee;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.App-nav ul li {
+  padding: 5px 10px;
+}
+
+.App-nav ul li a {
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+}
+
+.App-nav ul li a.selected {
+  color: #aaa;
+}
+
+.App-wrapper {
+  flex: 1;
+  padding: 20px;
+}
