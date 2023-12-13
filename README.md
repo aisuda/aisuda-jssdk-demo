@@ -159,9 +159,13 @@ export class AisudaPage extends React.Component<AisudaPageProps> {
 - 原路由规则：`api://${apiKey}`
 - 转换后路由：`/api/company/${companyKey}/app/${appKey}/page/${pageId}/apicenterproxy/${apiKey}`
 
-`数据模型` 路由规则：
+`数据模型(旧)` 路由规则：
 - 原路由规则：`model://${Datasource}.${Table}`
 - 转换后路由：`/api/resource/${companyKey}/${appKey}/page/${pageId}/${Datasource}.${Table}`
+
+`数据模型(新)` 路由规则：
+- 原路由规则：`model://${Datasource}.${Table}`
+- 转换后路由：`/api/resource/${companyKey}/${appKey}/page/${pageId}/${Datasource}/${Table}`
 
 `文件上传` 路由规则：
 - 原路由规则：`object-upload://${key}`
@@ -180,15 +184,18 @@ import * as jwt from "jsonwebtoken";
 import axios from "axios";
 import { Controller, Get, Post } from "../decorator/Controller";
 
+const PRIVATE_KEY = 'aisuda'
+
+// API 编排转发示例
 @Controller("api/company/:companyKey/app/:appKey/page/:pageId/apicenterproxy/:apiKey") // 这里是注册路由
-export class ProxyController {
+export class ApiProxyController {
   @Post()
-  async test(req: Request, res: Response, next: NextFunction) {
+  async apiProxy(req: Request, res: Response, next: NextFunction) {
     const token = jwt.sign(
       { 
         email: "user@baidu.com" // 必须确保这个用户在爱速搭平台存在
       }, 
-      "aisuda", // 这里的 key 必须和爱速搭平台配置的 ISUDA_INTERNAL_API_KEY 一致
+      PRIVATE_KEY, // 这里的 key 必须和爱速搭平台配置的 ISUDA_INTERNAL_API_KEY 一致
       {
         algorithm: "HS256", // 加密方式
       }
@@ -203,6 +210,51 @@ export class ProxyController {
       }
     }
     const result = await axios.post(url, data, options); // axios 用于发送请求到爱速搭平台后端服务
+
+    res.send(result.data);
+  }
+}
+
+// 新版数据模型转发示例
+@Controller("api/resource/:companyKey/:appKey/page/:pageId/:modelKey")
+export class ModelController {
+  // 列表接口
+  @Get()
+  async get(req: Request, res: Response) {
+    const token = jwt.sign({ email: "yupeng12@baidu.com" }, PRIVATE_KEY, {
+      algorithm: "HS256",
+    });
+    const { companyKey, appKey, pageId, modelKey } = req.params;
+    const [ds, model] = modelKey.split(".");
+    const query = qs.stringify(req.query as any);
+    const host = ""; // 平台域名，这里需要替换成自己的
+    const url = `${host}/api/resource/${companyKey}/${appKey}/page/${pageId}/${ds}/${model}?${query}`;
+    const options = {
+      headers: {
+        "X-Authorization": "Bearer " + token, // 带上鉴权信息，用于爱速搭平台内部鉴权
+      },
+    };
+    const result = await axios.get(url, options);
+
+    res.send(result.data);
+  }
+
+  // 新增数据接口
+  @Post()
+  async test(req: Request, res: Response) {
+    const token = jwt.sign({ email: "yupeng12@baidu.com" }, PRIVATE_KEY, {
+      algorithm: "HS256",
+    });
+    const { companyKey, appKey, pageId, modelKey } = req.params;
+    const [ds, model] = modelKey.split(".");
+    const host = ""; // 平台域名，这里需要替换成自己的
+    const url = `${host}/api/resource/${companyKey}/${appKey}/page/${pageId}/${ds}/${model}`;
+    const options = {
+      headers: {
+        "X-Authorization": "Bearer " + token, // 带上鉴权信息，用于爱速搭平台内部鉴权
+      },
+    };
+    const result = await axios.post(url, req.body, options);
 
     res.send(result.data);
   }
