@@ -276,3 +276,4 @@ export class ModelController {
 | pageHashId | string | 页面 hash id |
 | pageKey | string | 页面 key |
 | pagePath | string | 页面 path |
+| pageInfo | object | 页面信息 ```{"key": "页面 key", "title": "页面名称", "menuName": "菜单名称"}``` |
