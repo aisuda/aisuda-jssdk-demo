@@ -97,6 +97,8 @@ export class AisudaPage extends React.Component<AisudaPageProps> {
         const props = {
           // 数据
           data: this.props.data,
+          // 权限
+          perms: this.props.perms,
           // 替换请求域名
           AISUDA_HOST: 'http:/yourhost.com',
           // 全局环境变量
