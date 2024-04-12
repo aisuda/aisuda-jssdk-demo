@@ -1,13 +1,13 @@
 /**
- * @file Jssdk.tsx 
+ * @file jssdkReactComp.tsx
  *
- * @created: 2023/12/13
  */
+
 import React from "react";
 import {AisudaPage} from '../components/AisudaPage';
 
-function ApiCenter() {
-  const pageUrl = 'https://yupeng.bj.bcebos.com/jssdk/7ac8751b9a6c-3825510e/vxo93yjEP1-6e376401.js';
+export default function TestComp() {
+  const pageUrl = 'https://yupeng.bj.bcebos.com/jssdk/7ac8751b9a6c-3825510e/dAE5vlbZ59-b3cc20bb.js';
   const data = {customData: 'this is custom data'};
 
   return (
@@ -16,5 +16,3 @@ function ApiCenter() {
     </>
   );
 }
-
-export default ApiCenter;

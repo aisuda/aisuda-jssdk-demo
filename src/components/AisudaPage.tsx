@@ -3,23 +3,28 @@
  */
 
 import * as React from 'react';
+import { I18nContext } from '../context/i18n';
 
 interface AisudaPageProps {
-  /**
-   * 加载器 Url
-   */
+  /** 加载器 Url */
   loaderUrl: string;
 
   /** 页面 Url */
   pageUrl: string;
 
+  /** 页面 数据 */
   data?: any;
+
+  /** 权限 */
+  perms?: string[];
 }
 
 export class AisudaPage extends React.Component<AisudaPageProps> {
   static defaultProps: Pick<AisudaPageProps, 'loaderUrl'> = {
-    loaderUrl: 'https://jssdk.bj.bcebos.com/jssdk/loader-57e4a67d.js'
+    loaderUrl: 'https://jssdk.bj.bcebos.com/files/loader-cb798bd3.js'
   };
+  static contextType = I18nContext;
+  context!: React.ContextType<typeof I18nContext>;
 
   rootDom = React.createRef<HTMLDivElement>();
   unmounted = false;
@@ -36,18 +41,18 @@ export class AisudaPage extends React.Component<AisudaPageProps> {
         const props = {
           // 数据
           data: this.props.data,
+          // 权限
+          perms: this.props.perms,
           // 替换请求域名
           AISUDA_HOST: 'http://127.0.0.1:3000',
           // 全局环境变量
-          consts: {}
+          consts: {},
+          locale: this.context.locale
         };
         this.currentPage = page;
-        const env = {
-            fetcher: loader.overriderFetcher()
-        };
         this.rootDom.current &&
           !this.unmounted &&
-          page.mount(this.rootDom.current, page.schema, props, env);
+          page.mount(this.rootDom.current, page.schema, props);
       });
     });
   }

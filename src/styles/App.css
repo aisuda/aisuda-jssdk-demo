@@ -3,15 +3,21 @@
   display: flex;
   flex-direction: column;
 }
-.App-nav ul {
-  margin: 0;
-  padding: 0 10px;
-  height: 50px;
+.App-nav {
   background: #fff;
   border-bottom: 1px solid #eee;
   box-shadow: 0 4px 6px 0 #eee;
   display: flex;
   align-items: center;
+  padding: 0 10px;
+}
+.App-nav ul {
+  flex: 1;
+  padding: 0;
+  margin: 0;
+  height: 50px;
+  align-items: center;
+  display: flex;
   list-style: none;
 }
 
@@ -26,7 +32,7 @@
 }
 
 .App-nav ul li a.selected {
-  color: #aaa;
+  color: #2468f2;
 }
 
 .App-wrapper {
