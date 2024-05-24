@@ -223,7 +223,7 @@ export class ModelController {
   // 列表接口
   @Get()
   async get(req: Request, res: Response) {
-    const token = jwt.sign({ email: "yupeng12@baidu.com" }, PRIVATE_KEY, {
+    const token = jwt.sign({ email: "email@xxx.com" }, PRIVATE_KEY, {
       algorithm: "HS256",
     });
     const { companyKey, appKey, pageId, modelKey } = req.params;
@@ -244,7 +244,7 @@ export class ModelController {
   // 新增数据接口
   @Post()
   async test(req: Request, res: Response) {
-    const token = jwt.sign({ email: "yupeng12@baidu.com" }, PRIVATE_KEY, {
+    const token = jwt.sign({ email: "email@xxx.com" }, PRIVATE_KEY, {
       algorithm: "HS256",
     });
     const { companyKey, appKey, pageId, modelKey } = req.params;
